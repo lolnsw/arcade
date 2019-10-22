@@ -20,5 +20,4 @@ chmod +x /recalbox/share/custom_scripts/arcade-controller-client.py
 
 echo ""
 #echo "Rebooting..."
-
-reboot
+#reboot
