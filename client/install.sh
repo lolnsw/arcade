@@ -19,5 +19,5 @@ chmod +x /etc/init.d/S25arcade-controller-client
 chmod +x /recalbox/share/custom_scripts/arcade-controller-client.py
 
 echo ""
-#echo "Rebooting..."
-#reboot
+echo "Rebooting..."
+reboot
