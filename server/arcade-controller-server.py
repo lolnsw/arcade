@@ -12,10 +12,10 @@ from Adafruit_LED_Backpack import SevenSegment
 
 ### OPTIONS
 
-DEFAULT_COUNTDOWN = 125 # Initial countdown value (after the pi starts)
+DEFAULT_COUNTDOWN = 20 # Initial countdown value (after the pi starts)
 CLOCK_ON_SECONDS = 120 # if the time remaining is less than this value, the clock is turned on
 TIME_ALTERATION = 15 # time to add or remove from the countdown
-SESSION_END_HARD = True # If true, shutdown both client and server pis when the countdown reaches 0. If false, the TV screen will be turned off instead
+SESSION_END_HARD = False # If true, shutdown both client and server pis when the countdown reaches 0. If false, the TV screen will be turned off instead
 
 ############
 
@@ -105,6 +105,7 @@ class Countdown:
         self._seconds = DEFAULT_COUNTDOWN
         self.seconds_previous = DEFAULT_COUNTDOWN
         self.kill_received = False
+        self.session_live = True
 
     def add_time(self, sec):
         self._seconds = self._seconds + sec
@@ -114,7 +115,7 @@ class Countdown:
         self._seconds = self._seconds - sec
         if self._seconds < 0:
             self._seconds = 0
-        print("New ct: "+str(self._seconds))
+        #print("New ct: "+str(self._seconds))
 
     def button_push(self, button):
         if button == "add" and aw.admin_mode:
@@ -123,12 +124,14 @@ class Countdown:
             self.del_time(TIME_ALTERATION)
         elif button == "coin":
             self.add_time(TIME_ALTERATION)
+            disp.signal("temporary_on", 5)
 
     def run(self):
         while not self.kill_received:
             time.sleep(1)
-            #self.del_time(1)
-            self._seconds -= 1
+            self.del_time(1)
+            #self._seconds -= 1
+
             nb_minutes = int(self._seconds/60)
             nb_minutes_d1 = int(nb_minutes/10)
             nb_minutes_d2 = nb_minutes % 10
@@ -139,13 +142,18 @@ class Countdown:
 
             disp.set_digits(nb_minutes_d1, nb_minutes_d2, nb_sec_d1, nb_sec_d2)
 
-            print("                   [prev:"+str(self.seconds_previous)+"]["+str(self._seconds)+"]")
+            #print("                   [prev:"+str(self.seconds_previous)+"]["+str(self._seconds)+"]")
             if self.seconds_previous >= CLOCK_ON_SECONDS and self._seconds < CLOCK_ON_SECONDS:
                 print("Sending countown low")
                 disp.signal("countdown_low", True)
 
-            if self._seconds <=0:
-                self._seconds = 0
+
+            if self._seconds > 0:
+                self.session_live = True
+
+            if self._seconds <=0 and self.session_live:
+                # Ending session
+                self.session_live = False
 
                 if SESSION_END_HARD:
                     # Stop raspberry
@@ -185,6 +193,7 @@ class Display:
         self.sig_countdown_low = False
         self.sig_countdown_low_read = True
 
+        self.temporary_on = -1
 
     def on(self):
         self.screen_on = True
@@ -208,6 +217,9 @@ class Display:
             self.sig_countdown_low_read = False
         elif sig == "end_session":
             self.off()
+        elif sig =="temporary_on":
+            self.temporary_on = value
+            self.on()
 
     def button_push(self, button):
         if button == "add":
@@ -216,8 +228,6 @@ class Display:
         elif button == "del":
             print("Switching screen off")
             self.off()
-        elif button == "coin":
-            self.on()
 
     def set_digits(self, d0, d1, d2, d3):
         #print("rcv new digits " + str(d0) + str(d1) +str(d2) +str(d3))
@@ -232,6 +242,12 @@ class Display:
         while not self.kill_received:
             # Wait a quarter second (less than 1 second to prevent colon blinking
             time.sleep(0.25)
+
+            if self.temporary_on >= 0:
+                self.temporary_on = self.temporary_on - 0.25
+                if self.temporary_on < 0:
+                    self.off()
+
 
             if not self.sig_admin_mode_read:
                 if self.sig_admin_mode:
@@ -250,7 +266,7 @@ class Display:
                 #print("Write disp")
                 self.segment.write_display()
             else:
-                print("Screen off")
+                #print("Screen off")
                 self.segment.clear()
                 self.segment.write_display()
 
@@ -296,7 +312,6 @@ try:
         if pin == COIN:
             print("Coin inserted")
             ctdn.button_push("coin")
-            disp.button_push("coin")
 
         if pin == ADD_TIME or pin == DEL_TIME:
             if GPIO.input(ADD_TIME) and GPIO.input(DEL_TIME) and aw.admin_mode:
