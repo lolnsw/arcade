@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+#
+
+PIDFILE=/var/run/arcade-controller-server.pid
+BIN=/home/pi/arcade-controller-server.py
+
+log() {
+        echo -n $1
+        recallog "[init.d] $1"
+}
+
+start() {
+        log "Starting ${BIN}: "
+        start-stop-daemon -b -S -q -m -p ${PIDFILE} --exec ${BIN}
+        echo "OK"
+}
+
+stop() {
+        log "Stopping ${BIN}: "
+        start-stop-daemon -K -p ${PIDFILE}
+        echo "Daemon stopped"
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        stop
+        start
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+esac
+
+exit $?
