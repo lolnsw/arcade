@@ -23,12 +23,13 @@ try:
 
 
     while (True):
-        x=ser.readline()
-        if x == "MSG: ADMIN":
+        msg=ser.readline().strip()
+        print(msg)
+        if msg == "MSG: ADMIN":
             output = subprocess.Popen(['grep',"emulationstation.menu",'/recalbox/share/system/recalbox.conf'], stdout=subprocess.PIPE).communicate()[0]
             marray = output.split("=")
             mode = marray[1]
-            print("Current modei: "+mode)
+            print("Current mode: "+mode)
             if mode.startswith("default"):
                 print("Changing mode to nomenu")
                 cmd = "sed -i 's/emulationstation.menu=.*/emulationstation.menu=none/'  /recalbox/share/system/recalbox.conf"
@@ -44,6 +45,16 @@ try:
 
             # reload emulation station
             cmd = "/etc/init.d/S31emulationstation restart"
+            subprocess.call(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        elif msg == "MSG: SHUTDOWN":
+            print("Shutdown message received")
+            print("Stopping Emulation Station...")
+            cmd = "/etc/init.d/S31emulationstation stop"
+            subprocess.call(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            time.sleep(2)
+            print("Stopping raspberry")
+            cmd = "shutdown -h now"
             subprocess.call(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 
