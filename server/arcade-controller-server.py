@@ -12,7 +12,7 @@ from Adafruit_LED_Backpack import SevenSegment
 
 ### OPTIONS
 
-DEFAULT_COUNTDOWN = 20 # Initial countdown value (after the pi starts)
+DEFAULT_COUNTDOWN = 120 # Initial countdown value (after the pi starts)
 CLOCK_ON_SECONDS = 120 # if the time remaining is less than this value, the clock is turned on
 TIME_ALTERATION = 15 # time to add or remove from the countdown
 SESSION_END_HARD = False # If true, shutdown both client and server pis when the countdown reaches 0. If false, the TV screen will be turned off instead
@@ -279,6 +279,10 @@ def handler_SIGTSTP(signum, fame):
     exit()
 signal.signal(signal.SIGTSTP, handler_SIGTSTP)
 
+print("Initializing admin display")
+aw = AdminWatcher()
+t3 = threading.Thread(target=aw.run)
+t3.start()
 
 try:
     ADD_TIME = 13
@@ -296,17 +300,17 @@ try:
 
     cc = ControllerClient()
 
+    print("Initializing display")
     disp = Display()
     t1 = threading.Thread(target=disp.run)
     t1.start()
 
+    print("Initializing countdown")
     ctdn = Countdown()
     t2 = threading.Thread(target=ctdn.run)
     t2.start()
 
-    aw = AdminWatcher()
-    t3 = threading.Thread(target=aw.run)
-    t3.start()
+
 
     def handle(pin):
         if pin == COIN:
@@ -339,8 +343,14 @@ try:
     while True:
         time.sleep(1)
 
+
+
 except KeyboardInterrupt:
     print("Keyboard Interrupt")
+
+except:
+    e = sys.exc_info()[0]
+    print( "<p>Error: %s</p>" % e)
 
 finally:
     print("Finally exiting")

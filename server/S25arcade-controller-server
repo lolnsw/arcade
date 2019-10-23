@@ -3,7 +3,7 @@
 #
 
 PIDFILE=/var/run/arcade-controller-server.pid
-BIN=/home/pi/arcade-controller-server.py
+BIN=/home/pi/arcade_controller/arcade-controller-server.py
 
 log() {
         echo -n $1
