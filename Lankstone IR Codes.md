@@ -1,4 +1,4 @@
-LANKSTONE IR CODEs
+Lankstone IR codes
 ==================
 ??? = 4294967295 <BR>
 Power on/off: 16753245 <BR>
