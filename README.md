@@ -7,8 +7,8 @@ Server installation:
 0) Burn Raspbian Buster lite to sd card
 1) cd /Volumes/boot (on MAC)
 2) touch ssh
-3) vi wpa_supplicant.conf:
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+3) vi wpa_supplicant.conf:<BR>
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev<BR>
 network={
     ssid="xxxxx"
     psk="xxxxx"
