@@ -20,7 +20,7 @@ gpu_mem=16
 
 5) boot raspberry and ssh to it
 6) sudo raspi-config<BR>
-  - enable I2C
-  - enable Serial & no serial console
+-> nable I2C
+-> enable Serial & no serial console
 
 7) curl https://raw.githubusercontent.com/lolnsw/arcade_controller/master/server/install.sh| sudo bash
