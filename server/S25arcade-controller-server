@@ -7,7 +7,7 @@ BIN=/home/pi/arcade_controller/arcade-controller-server.py
 
 log() {
         echo -n $1
-        recallog "[init.d] $1"
+        #recallog "[init.d] $1"
 }
 
 start() {
