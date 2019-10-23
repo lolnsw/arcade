@@ -1,9 +1,12 @@
 # arcade_controller
 
 Client installation:
+--------------------
+
 curl https://raw.githubusercontent.com/lolnsw/arcade_controller/master/client/install.sh |  bash
 
 Server installation:
+--------------------
 0) Burn Raspbian Buster lite to sd card
 1) cd /Volumes/boot (on MAC)
 2) touch ssh
