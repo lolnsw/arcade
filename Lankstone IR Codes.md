@@ -1,7 +1,7 @@
 LANKSTONE IR CODEs
 ==================
 ??? = 4294967295 <BR>
-Power: 16753245 <BR>
+Power on/off: 16753245 <BR>
 Lock: 16769565 <BR>
 1: 16769055 <BR>
 2: 16754775 <BR>
