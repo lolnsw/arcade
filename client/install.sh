@@ -14,7 +14,7 @@ echo ""
 echo "Installing arcade-controller scripts"
 mkdir /recalbox/share/custom_scripts
 curl https://raw.githubusercontent.com/lolnsw/arcade_controller/master/client/S25arcade-controller-client > /etc/init.d/S25arcade-controller-client
-curl https://raw.githubusercontent.com/lolnsw/arcade_controller/master/client/arcade-controller-client.py> /recalbox/share/custom_scripts/arcade-controller-client.py
+curl https://raw.githubusercontent.com/lolnsw/arcade_controller/master/client/arcade-controller-client.py > /recalbox/share/custom_scripts/arcade-controller-client.py
 chmod +x /etc/init.d/S25arcade-controller-client
 chmod +x /recalbox/share/custom_scripts/arcade-controller-client.py
 
