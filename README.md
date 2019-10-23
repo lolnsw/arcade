@@ -3,6 +3,7 @@
 Client installation:
 --------------------
 
+on recalbox server:<BR>
 curl https://raw.githubusercontent.com/lolnsw/arcade_controller/master/client/install.sh |  bash
 
 Server installation:
