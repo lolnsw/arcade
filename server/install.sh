@@ -15,7 +15,8 @@ echo ""
 echo "Installing arcade-controller scripts"
 mkdir /home/pi/arcade_controller
 cd /home/pi/arcade_controller
-curl https://raw.githubusercontent.com/lolnsw/arcade_controller/master/server/S25arcade-controller-server > /etc/init.d/S25arcade-controller-server
+curl https://raw.githubusercontent.com/lolnsw/arcade_controller/master/server/arcade-controller-server > /etc/init.d/arcade-controller-server
 curl https://raw.githubusercontent.com/lolnsw/arcade_controller/master/server/arcade-controller-server.py > /home/pi/arcade_controller/arcade-controller-server.py
-sudo chmod +x /etc/init.d/S25arcade-controller-server
+sudo chmod +x /etc/init.d/arcade-controller-server
+sudo update-rc.d arcade-controller-server defaults
 sudo chmod +x /home/pi/arcade_controller/arcade-controller-server.py
