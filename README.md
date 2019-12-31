@@ -28,3 +28,5 @@ gpu_mem=16
 -> enable Serial & no serial console
 
 7) curl https://raw.githubusercontent.com/lolnsw/arcade_controller/master/server/install.sh| sudo bash
+8) sudo service arcade-controller-server start
+
