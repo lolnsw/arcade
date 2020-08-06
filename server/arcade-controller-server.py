@@ -12,7 +12,7 @@ from Adafruit_LED_Backpack import SevenSegment
 
 ### OPTIONS
 
-DEFAULT_COUNTDOWN = 120 # Initial countdown value (after the pi starts)
+DEFAULT_COUNTDOWN = 120 # Initial countdown value (after the pi starts).
 CLOCK_ON_SECONDS = 120 # if the time remaining is less than this value, the clock is turned on
 TIME_ALTERATION = 15 # time to add or remove from the countdown
 SESSION_END_HARD = False # If true, shutdown both client and server pis when the countdown reaches 0. If false, the TV screen will be turned off instead
